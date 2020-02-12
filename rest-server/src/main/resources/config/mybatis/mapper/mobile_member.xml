@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mobile_member">
+	<select id="list_mobile_member" resultType="vo.MobileMemberVo">
+		select * from mobile_member
+	</select>
+	
+	<select id="one_mobile_member_id" parameterType="String" resultType="vo.MobileMemberVo" >
+		select * from mobile_member where id = #{id}
+	</select>
+	
+	<select id="one_mobile_member_idx" parameterType="int" resultType="vo.MobileMemberVo" >
+		select * from mobile_member where idx = #{idx}
+	</select>
+	
+	<insert id="insert_mobile_member" parameterType="vo.MobileMemberVo">
+		insert into mobile_member values( (select nvl(max(idx),0)+1 from mobile_member), #{name}, #{id}, #{pwd}, null)
+	</insert>
+	
+	<update id="update_mobile_member_device_token" parameterType="vo.MobileMemberVo">
+		update mobile_member set device_token = #{device_token} where id=#{id}
+	</update>
+</mapper>

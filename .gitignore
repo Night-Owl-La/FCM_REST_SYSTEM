@@ -1,0 +1,4 @@
+.metadata/
+Servers/
+rest-server/target/
+rest-server/.settings/
