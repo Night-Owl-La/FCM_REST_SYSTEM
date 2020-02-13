@@ -18,16 +18,13 @@ class LoginFormActivity : AppCompatActivity() {
         btn_login.setOnClickListener {
             val id = et_id.text.toString().trim()
             val pwd = et_pw.text.toString().trim()
-            checkLogin(id, pwd)
-
+            requestLogin(id, pwd)
         }
 
-        btn_signup.setOnClickListener {
-
-        }
+        btn_locate_signup.setOnClickListener { startActivity(Intent(this, SignUpFormActivity::class.java)) }
     }
 
-    private fun checkLogin(id: String, pwd: String) {
+    private fun requestLogin(id: String, pwd: String) {
 
         if (id.isEmpty()) {
             showMessageDialog(this, "", "' ID '  is empty")
@@ -36,15 +33,15 @@ class LoginFormActivity : AppCompatActivity() {
         }
 
         if (pwd.isEmpty()) {
-            showMessageDialog(this, "", "' password ' is empty")
+            showMessageDialog(this, "", "' Password ' is empty")
             et_pw.setText("")
             et_pw.requestFocus()
         }
 
-        checkLoginFromDB(id,pwd)
+        checkUserDataFromDB(id,pwd)
     }
 
-    fun checkLoginFromDB(id: String, pwd: String){
+    private fun checkUserDataFromDB(id: String, pwd: String){
         MobileMemberDao.login(id, pwd, object : Handler(){
             override fun handleMessage(msg: Message) {
                 when(msg.what){
@@ -54,8 +51,9 @@ class LoginFormActivity : AppCompatActivity() {
                         showMessageDialog(this@LoginFormActivity, "", "로그인 성공")
                         startActivity(Intent(this@LoginFormActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     }
-                }
+                }//when end
             }
-        })
+        }) //Dao end
     }
+
 }

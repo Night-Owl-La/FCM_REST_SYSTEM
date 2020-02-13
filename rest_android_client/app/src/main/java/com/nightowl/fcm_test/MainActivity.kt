@@ -13,7 +13,6 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.InstanceIdResult
 import dao.MobileMemberDao
 import kotlinx.android.synthetic.main.activity_main.*
-import util.logCatSimple
 import util.showConfirmDialog
 import util.toastShortSimple
 
@@ -23,11 +22,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        btn_token.setOnClickListener { checkReceiveCloudMessageOK() } // btn_token end
-
-        btn_loginform.setOnClickListener {
-            startActivity(Intent(this, LoginFormActivity::class.java))
-        }
+        btn_token.setOnClickListener { checkReceiveCloudMessageOK() }
+        btn_loginform.setOnClickListener { startActivity(Intent(this, LoginFormActivity::class.java)) }
+        btn_signupform.setOnClickListener { startActivity(Intent(this, SignUpFormActivity::class.java)) }
     }
 
     private fun checkReceiveCloudMessageOK(){
@@ -38,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                     1 -> sendDeviceToken()
                 }
             }
-        })
+        })//showConfirmDialog end
     }
 
     fun sendDeviceToken() {
@@ -62,4 +59,5 @@ class MainActivity : AppCompatActivity() {
 
         })
     }
+
 }
