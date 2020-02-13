@@ -57,18 +57,29 @@ public class FCM_Restful_Controller {
 	@RequestMapping(value = "/mobile_member", method = RequestMethod.POST)
 	@ResponseBody
 	public Map insert(@RequestBody MobileMemberVo vo) {
-		System.out.println(vo.toString());
-		int res = mobileMemberDao.insert(vo);
+		int res = 0;
+		
+		try {
+			res = mobileMemberDao.insert(vo);
+		}catch(Exception e){
+			res = 0;
+		}
 
 		Map map = new HashMap();
 		map.put("result", res);
 		return map;
 	}
-
+	
 	@RequestMapping(value = "/mobile_member/device_token", method = RequestMethod.PUT)
 	@ResponseBody
 	public Map updateDeviceToken(@RequestBody MobileMemberVo vo) {
-		int res = mobileMemberDao.updateDeviceToken(vo);
+		int res = 0;
+		
+		try {
+			res = mobileMemberDao.updateDeviceToken(vo);
+		}catch(Exception e){
+			res = 0;
+		}
 
 		Map map = new HashMap();
 		map.put("result", res);

@@ -10,6 +10,6 @@ create table mobile_member(
 alter table mobile_member add constraint pk_mobile_member_idx primary key (idx);
 alter table mobile_member add constraint uq_mobile_member_id unique (id);
 
-insert into mobile_member vaues((select nvl(max(idx),0)+1 from mobile_member), 'test', 'test', 1111, null);
+insert into mobile_member values((select nvl(max(idx),0)+1 from mobile_member), 'test', 'test', 1111, null);
 
 select * from mobile_member;
