@@ -65,7 +65,7 @@ public class FCM_Restful_Controller {
 		return map;
 	}
 
-	@RequestMapping(value = "/mobile_member/device_token", method = RequestMethod.POST)
+	@RequestMapping(value = "/mobile_member/device_token", method = RequestMethod.PUT)
 	@ResponseBody
 	public Map updateDeviceToken(@RequestBody MobileMemberVo vo) {
 		int res = mobileMemberDao.updateDeviceToken(vo);
