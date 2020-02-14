@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Message
 import dao.MobileMemberDao
 import kotlinx.android.synthetic.main.activity_login_form.*
+import util.logCatSimple
 import util.showMessageDialog
 
 class LoginFormActivity : AppCompatActivity() {
@@ -30,12 +31,14 @@ class LoginFormActivity : AppCompatActivity() {
             showMessageDialog(this, "", "' ID '  is empty")
             et_id.setText("")
             et_id.requestFocus()
+            return
         }
 
         if (pwd.isEmpty()) {
             showMessageDialog(this, "", "' Password ' is empty")
             et_pw.setText("")
             et_pw.requestFocus()
+            return
         }
 
         checkUserDataFromDB(id,pwd)
@@ -45,12 +48,11 @@ class LoginFormActivity : AppCompatActivity() {
         MobileMemberDao.login(id, pwd, object : Handler(){
             override fun handleMessage(msg: Message) {
                 when(msg.what){
-                    MobileMemberDao.LOGIN_ID_FAIL -> showMessageDialog(this@LoginFormActivity, "", "아이디가 틀립니다.")
-                    MobileMemberDao.LOGIN_PWD_FAIL -> showMessageDialog(this@LoginFormActivity, "", "비밀번호가 틀립니다.")
                     MobileMemberDao.LOGIN_SUCCESS -> {
                         showMessageDialog(this@LoginFormActivity, "", "로그인 성공")
                         startActivity(Intent(this@LoginFormActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     }
+                    else -> showMessageDialog(this@LoginFormActivity, msg.what.toString(), msg.obj.toString())
                 }//when end
             }
         }) //Dao end

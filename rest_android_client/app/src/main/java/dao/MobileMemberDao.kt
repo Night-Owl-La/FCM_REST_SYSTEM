@@ -9,6 +9,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import service.RetrofitHelper
+import util.logCatSimple
 import util.toastShortSimple
 import vo.MobileMemberVo
 
@@ -16,6 +17,7 @@ object MobileMemberDao {
     const val LOGIN_SUCCESS = 0
     const val LOGIN_ID_FAIL = 1
     const val LOGIN_PWD_FAIL = 2
+    const val LOGIN_SERVER_CONNECT_FAIL =3
 
     fun login(id: String, pwd: String, handler: Handler) {
         RetrofitHelper.getService().login(id)
@@ -25,9 +27,20 @@ object MobileMemberDao {
                         val user = response.body() ?: MobileMemberVo()
 
                         when {
-                            user.idx == 0 -> handler.sendEmptyMessage(LOGIN_ID_FAIL)
-                            user.pwd != pwd -> handler.sendEmptyMessage(LOGIN_PWD_FAIL)
+                            user.idx == 0 -> {
+                                val msg = Message()
+                                msg.what = LOGIN_ID_FAIL
+                                msg.obj = "아이디가 틀립니다."
+                                handler.sendMessage(msg)
+                            }
+                            user.pwd != pwd -> {
+                                val msg = Message()
+                                msg.what = LOGIN_PWD_FAIL
+                                msg.obj = "비밀번호가 틀립니다."
+                                handler.sendMessage(msg)
+                            }
                             else -> {
+                                logCatSimple(user.toString())
                                 MyShareData.user = user
                                 handler.sendEmptyMessage(LOGIN_SUCCESS)
                             }
@@ -37,7 +50,7 @@ object MobileMemberDao {
 
                 override fun onFailure(call: Call<MobileMemberVo>, t: Throwable) {
                     val msg = Message()
-                    msg.what = MyConstant.FAIL
+                    msg.what = LOGIN_SERVER_CONNECT_FAIL
                     msg.obj = "서버에서 데이터를 받아오지 못했습니다!"
                     handler.sendMessage(msg)
                 }
